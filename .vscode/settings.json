@@ -1,5 +1,5 @@
 {
-    "python.pythonPath": "/home/carlos/Desktop/facturacion/proyecto/bin/python",
+    "python.pythonPath": "D:\\Users\\Usuario\\Documents\\00_django\\facturacion\\entvirt\\Scripts\\python.exe",
     "python.testing.pytestArgs": [
         "app"
     ],
