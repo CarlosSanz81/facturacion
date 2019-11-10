@@ -18,6 +18,10 @@ class CategoriaForm(forms.ModelForm):
             })
 
 class SubCategoriaForm(forms.ModelForm):
+    categoria = forms.ModelChoiceField(
+        queryset=Categoria.objects.filter(estado=True) # Se utiliza para seleccionar solos las Categorias ACTIVAS
+        .order_by('descripcion')
+    )
     class Meta:
         model = SubCategoria
         fields = ['categoria', 'descripcion', 'estado']
