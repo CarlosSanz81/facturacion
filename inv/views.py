@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views import generic
 from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -6,7 +6,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from .models import Categoria, SubCategoria, Marca
 from .forms import CategoriaForm, SubCategoriaForm, MarcaForm
 
-
+#CATEGORIAS
 class CategoriaView(LoginRequiredMixin, generic.ListView):
     model = Categoria
     template_name = "inv/categoria_list.html"
@@ -45,7 +45,7 @@ class CategoriaDel(LoginRequiredMixin, generic.DeleteView):
     login_url = "bases:login"
 
 
-
+#SUB CATEGORIAS
 class SubCategoriaView(LoginRequiredMixin, generic.ListView):
     model = SubCategoria
     template_name = "inv/subcategoria_list.html"
@@ -84,7 +84,7 @@ class SubCategoriaDel(LoginRequiredMixin, generic.DeleteView):
     login_url = "bases:login"
 
 
-
+#MARCAS
 class MarcaView(LoginRequiredMixin, generic.ListView):
     model = Marca
     template_name = "inv/marca_list.html"
@@ -115,4 +115,27 @@ class MarcaEdit(LoginRequiredMixin, generic.UpdateView):
         form.instance.um = self.request.user.id
         return super().form_valid(form)
 
+
+#BOTON DE DESACTIVAR
+def marca_inactivar(request, id):
+    marca = Marca.objects.filter(pk=id).first()
+    contexto = {}
+    template_name = "inv/catalogos_del.html"
+
+    if not marca:
+        return redirect("inv:marca_list")
+
+    if request.method == 'GET':
+        contexto = {'obj':marca}
+    
+    if request.method == 'POST':
+        if marca.estado:
+            marca.estado = False
+        else:
+            marca.estado = True
+        marca.save()
+        return redirect("inv:marca_list")
+
+    return render(request, template_name,contexto)
+    
 
