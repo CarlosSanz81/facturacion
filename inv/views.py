@@ -3,8 +3,8 @@ from django.views import generic
 from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin
 
-from .models import Categoria, SubCategoria, Marca
-from .forms import CategoriaForm, SubCategoriaForm, MarcaForm
+from .models import Categoria, SubCategoria, Marca, UnidadMedida
+from .forms import CategoriaForm, SubCategoriaForm, MarcaForm, UnidadMedidaForm
 
 #CATEGORIAS
 class CategoriaView(LoginRequiredMixin, generic.ListView):
@@ -115,6 +115,36 @@ class MarcaEdit(LoginRequiredMixin, generic.UpdateView):
         form.instance.um = self.request.user.id
         return super().form_valid(form)
 
+#UNIDAD DE MEDIDA
+class UnidadMedidaView(LoginRequiredMixin, generic.ListView):
+    model = UnidadMedida
+    template_name = "inv/unidadmedida_list.html"
+    context_object_name = "obj"
+    login_url = "bases:login"
+
+class UnidadMedidaNew(LoginRequiredMixin, generic.CreateView):
+    model = UnidadMedida
+    template_name = "inv/unidadmedida_form.html"
+    context_object_name = "obj"
+    form_class = UnidadMedidaForm
+    success_url = reverse_lazy("inv:unidadmedida_list")
+    login_url = "bases:login"
+
+    def form_valid(self, form):
+        form.instance.uc = self.request.user
+        return super().form_valid(form)
+
+class UnidadMedidaEdit(LoginRequiredMixin, generic.UpdateView):
+    model = UnidadMedida
+    template_name = "inv/unidadmedida_form.html"
+    context_object_name = "obj"
+    form_class = UnidadMedidaForm
+    success_url = reverse_lazy("inv:unidadmedida_list")
+    login_url = "bases:login"
+
+    def form_valid(self, form):
+        form.instance.um = self.request.user.id
+        return super().form_valid(form)
 
 #BOTON DE DESACTIVAR
 def marca_inactivar(request, id):
@@ -138,4 +168,23 @@ def marca_inactivar(request, id):
 
     return render(request, template_name,contexto)
     
+def unidadmedida_inactivar(request, id):
+    marca = UnidadMedida.objects.filter(pk=id).first()
+    contexto = {}
+    template_name = "inv/catalogos_del.html"
 
+    if not marca:
+        return redirect("inv:unidadmedida_list")
+
+    if request.method == 'GET':
+        contexto = {'obj':marca}
+    
+    if request.method == 'POST':
+        if marca.estado:
+            marca.estado = False
+        else:
+            marca.estado = True
+        marca.save()
+        return redirect("inv:unidadmedida_list")
+
+    return render(request, template_name,contexto)
