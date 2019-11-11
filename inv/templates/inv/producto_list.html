@@ -47,7 +47,8 @@
               <td>{{ item.ultima_compra }}</td>
               
               <td>
-                <a href="{% url 'inv:producto_edit' item.id %} " class="btn btn-warning btn-circle" role="button"><i class="far fa-edit"></i></a>
+                <button onclick="return abrir_modal('{% url 'inv:producto_edit' item.id %}')" class="btn btn-warning btn-circle">
+                <i class="far fa-edit"></i></button>
                 {% if not item.estado %}
                   <a href="{% url 'inv:producto_inactivar' item.id %}" class="btn btn-success btn-circle" role="button"><i class="far fa-thumbs-up"></i></a>
                 {% else %}

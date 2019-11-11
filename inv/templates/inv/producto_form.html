@@ -1,9 +1,9 @@
 <div class="modal-dialog modal-lg">
     <div class="modal-content">
         {% if obj %}
-        <form method="POST" role="form" class="form" action="{% url 'inv:producto_edit' obj.pk %}">
+        <form method="POST" role="form" class="form-inline" action="{% url 'inv:producto_edit' obj.pk %}">
         {% else %}
-        <form method="POST" role="form" class="form" action="{% url 'inv:producto_new' %}">
+        <form method="POST" role="form" class="form-inline" action="{% url 'inv:producto_new' %}">
         {% endif %}
             
             <div class="col-xl-12 col-md-12 mb-12">
