@@ -26,7 +26,7 @@ class Proveedor(ClaseModelo):
     def __str__(self):
         return '{}'.format(self.descripcion)
 
-    def save():
+    def save(self):
         self.descripcion = self.descripcion.upper()
         super(Proveedor, self).save()
 

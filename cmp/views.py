@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views import generic
 from django.urls import reverse_lazy
 
@@ -36,7 +36,29 @@ class ProveedorEdit(LoginRequiredMixin, generic.UpdateView):
     login_url = "bases:login"
 
     def form_valid(self, form):
-        form.instance.um = self.request.user
-        print(self.request.user.id)
+        form.instance.um = self.request.user.id
+        # print(self.request.user.id)
         return super().form_valid(form)
 
+
+#DESACTIVACIONES
+def proveedor_inactivar(request, id):
+    prov = Proveedor.objects.filter(pk=id).first()
+    contexto = {}
+    template_name = "./inv/catalogos_del.html"
+
+    if not prov:
+        return redirect("cmp:proveedor_list")
+
+    if request.method == 'GET':
+        contexto = {'obj':prov}
+            
+    if request.method == 'POST':
+        if prov.estado:
+            prov.estado = False
+        else:
+            prov.estado = True
+        prov.save()
+        return redirect("cmp:proveedor_list")
+
+    return render(request, template_name,contexto)
