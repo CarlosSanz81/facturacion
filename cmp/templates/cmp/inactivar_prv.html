@@ -1,0 +1,75 @@
+<div class="modal-dialog modal-lg">
+    <div class="modal-content">
+
+        <form method="POST" class="form-inline">
+            {% csrf_token %}
+            
+            <div class="col-xl-4 col-md-1 mb-2">
+                <div class="card border-left-danger shadow h-100 py-2">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                            {% if not obj.estado %}
+                                <div class="text-xs font-weight-bold text-warning text-uppercase"> 
+                                    <div class="alert">
+                                        Activar <b>{{ obj.descripcion }} </b>?
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <button type="button" class="btn btn-danger" id="btnInactivar"><i class="far fa-question-circle"></i>Si, Activar</button>
+                                <button type="button" class="btn btn-success" onclick="return cerrar_modal()" >No, Cancelar</button>
+                            {% else %}
+                                <div class="text-xs font-weight-bold text-warning text-uppercase"> 
+                                    <div class="alert">
+                                        Desactivar <b>{{ obj.descripcion }} </b>?
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <button type="button" class="btn btn-danger" id="btnInactivar"><i class="far fa-question-circle"></i>Si, Desactivar</button>
+                                <button type="button" class="btn btn-success" onclick="return cerrar_modal()" >No, Cancelar</button>
+                            {% endif %}
+                                                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+<script>
+$(document).ready(function(){
+
+    var token = $('input[name=csrfmiddlewaretoken]').val();
+
+    $("#btnInactivar").click(function(e){
+        e.preventDefault();
+
+        var id = {{ obj.id }};
+        var template = "{% url 'cmp:proveedor_inactivar' obj.id %}";
+        var data = {"id":id};
+        data = JSON.stringify(data);
+
+        $.ajax({
+            type: "POST",
+            url: template,
+            data: data,
+            success: function(response){
+                console.log(response);
+                cerrar_modal();
+                alert(response);
+            },
+            error: function(jqXHR, textStatus, errorThrow){
+                console.log(textStatus, errorThrow);
+                cerrar_modal();
+            }
+
+        });
+    });
+
+});
+</script>
