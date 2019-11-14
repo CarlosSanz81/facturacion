@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.views import generic
 from django.urls import reverse_lazy
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin , PermissionRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
 
 from django.http import HttpResponse
@@ -11,7 +11,8 @@ from .models import Categoria, SubCategoria, Marca, UnidadMedida, Producto
 from .forms import CategoriaForm, SubCategoriaForm, MarcaForm, UnidadMedidaForm, ProductoForm
 
 #CATEGORIAS
-class CategoriaView(LoginRequiredMixin, generic.ListView):
+class CategoriaView(LoginRequiredMixin, PermissionRequiredMixin, generic.ListView):
+    permission_required = "inv.view_categoria"
     model = Categoria
     template_name = "inv/categoria_list.html"
     context_object_name = "obj"
@@ -52,7 +53,8 @@ class CategoriaEdit(SuccessMessageMixin, LoginRequiredMixin, generic.UpdateView)
 
 
 #SUB CATEGORIAS
-class SubCategoriaView(LoginRequiredMixin, generic.ListView):
+class SubCategoriaView(LoginRequiredMixin,PermissionRequiredMixin, generic.ListView):
+    permission_required = "inv.view_subcategoria"
     model = SubCategoria
     template_name = "inv/subcategoria_list.html"
     context_object_name = "obj"
