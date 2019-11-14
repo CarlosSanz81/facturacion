@@ -43,16 +43,17 @@
               <td>{{ item.existencia }}</td>
               <td>{{ item.marca }}</td>
               <td>{{ item.unidad_medida }}</td>
-              <td>{{ item.estado|yesno:"Activo,Desactivado" }}</td>
+              <td>{{ item.estado|yesno:"Activo, Desactivado" }}</td>
               <td>{{ item.ultima_compra }}</td>
               
               <td>
-                <button onclick="return abrir_modal('{% url 'inv:producto_edit' item.id %}')" class="btn btn-warning btn-circle">
+                <button  class="btn btn-warning btn-circle" onclick= "return abrir_modal('{% url 'inv:producto_edit' item.id %}')" >
                 <i class="far fa-edit"></i></button>
                 {% if not item.estado %}
-                  <a href="{% url 'inv:producto_inactivar' item.id %}" class="btn btn-success btn-circle" role="button"><i class="far fa-thumbs-up"></i></a>
+                  <button  class="btn btn-success btn-circle" onclick= "return abrir_modal('{% url 'inv:producto_inactivar' item.id %}')" ><i class="far fa-thumbs-up"></i>
+
                 {% else %}
-                  <a href="{% url 'inv:producto_inactivar' item.id %}" class="btn btn-danger btn-circle" role="button"><i class="far fa-thumbs-down"></i></a>
+                  <button  class="btn btn-danger btn-circle" onclick= "return abrir_modal('{% url 'inv:producto_inactivar' item.id %}')" ><i class="far fa-thumbs-down"></i>
                 {% endif %}
               </td>
             </tr>
