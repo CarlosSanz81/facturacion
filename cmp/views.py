@@ -45,25 +45,25 @@ class ProveedorEdit(LoginRequiredMixin, generic.UpdateView):
 
 #DESACTIVACIONES
 def proveedor_inactivar(request, id):
-    prov = Proveedor.objects.filter(pk=id).first()
-    contexto = {}
-    template_name = "cmp/inactivar_prv.html"
+    template_name='cmp/inactivar_prv.html'
+    contexto={}
+    prv = Proveedor.objects.filter(pk=id).first()
 
-    if not prov:
+    if not prv:
         return HttpResponse('Proveedor no existe ' + str(id))
     
     if request.method == 'GET':
-        contexto={'obj':prov}
+        contexto={'obj':prv}
              
     if request.method == 'POST':
-        if prov.estado:
-            prov.estado = False
-            prov.save()
+        if prv.estado:
+            prv.estado = False
+            prv.save()
             contexto = {'obj':'OK'}
             return HttpResponse('Proveedor Inactivado')
         else:
-            prov.estado = True
-            prov.save()
+            prv.estado = True
+            prv.save()
             contexto = {'obj':'OK'}
             return HttpResponse('Proveedor Activado')
 
