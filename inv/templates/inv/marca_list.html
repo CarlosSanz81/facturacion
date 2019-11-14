@@ -39,11 +39,13 @@
               <td>{{ item.fm | date:"d/m/Y H:i:s"}}</td>
               
               <td>
-                <a href="{% url 'inv:marca_edit' item.id %} " class="btn btn-warning btn-circle" role="button"><i class="far fa-edit"></i></a>
+                <button  class="btn btn-warning btn-circle" onclick= "return abrir_modal('{% url 'inv:marca_edit' item.id %}')" >
+                <i class="far fa-edit"></i></button>
                 {% if not item.estado %}
-                  <a href="{% url 'inv:marca_inactivar' item.id %}" class="btn btn-success btn-circle" role="button"><i class="far fa-thumbs-up"></i></a>
+                  <button  class="btn btn-success btn-circle" onclick= "return abrir_modal('{% url 'inv:marca_inactivar' item.id %}')" ><i class="far fa-thumbs-up"></i>
+
                 {% else %}
-                  <a href="{% url 'inv:marca_inactivar' item.id %}" class="btn btn-danger btn-circle" role="button"><i class="far fa-thumbs-down"></i></a>
+                  <button  class="btn btn-danger btn-circle" onclick= "return abrir_modal('{% url 'inv:marca_inactivar' item.id %}')" ><i class="far fa-thumbs-down"></i>
                 {% endif %}
               </td>
             </tr>
@@ -60,7 +62,33 @@
 <script>
   // Call the dataTables jQuery plugin
   $(document).ready(function(){
-    $('.table').DataTable();
+    $('.table').DataTable({
+      "language": {
+        "sProcessing": "Procesando...",
+        "sLengthMenu": "Mostrar _MENU_ registros",
+        "sZeroRecords": "No se encontraron resultados",
+        "EmptyTable": "Ningún dato disponible en esta tabla",
+        "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+        "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
+        "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
+        "sInfoPostFix": "",
+        "sSearch": "Buscar",
+        "sUrl": "",
+        "sInfoThousands": ",",
+        "sLoadingRecords": "Cargando ...",
+        "oPaginate": {
+          "sFirst":"<span class='fa fa-angle-double-left'></span>",
+          "sLast":"<span class='fa fa-angle-double-right'></span>",
+          "sNext":"<span class='fa fa-angle-right'></span>",
+          "sPrevious":"<span class='fa fa-angle-left'></span>"
+        },
+        "oAria" : {
+          "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
+          "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+        }
+
+      }
+    });
   });
 </script>
 {% endblock js_page %}

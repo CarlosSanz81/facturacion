@@ -3,6 +3,9 @@ from django.views import generic
 from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin
 
+from django.http import HttpResponse
+import json
+
 from .models import Categoria, SubCategoria, Marca, UnidadMedida, Producto
 from .forms import CategoriaForm, SubCategoriaForm, MarcaForm, UnidadMedidaForm, ProductoForm
 
@@ -37,12 +40,12 @@ class CategoriaEdit(LoginRequiredMixin, generic.UpdateView):
         form.instance.um = self.request.user.id
         return super().form_valid(form)
 
-class CategoriaDel(LoginRequiredMixin, generic.DeleteView):
-    model = Categoria
-    template_name = "inv/catalogos_del.html"
-    context_object_name = "obj"
-    success_url = reverse_lazy("inv:categoria_list")
-    login_url = "bases:login"
+# class CategoriaDel(LoginRequiredMixin, generic.DeleteView):
+#     model = Categoria
+#     template_name = "inv/catalogos_del.html"
+#     context_object_name = "obj"
+#     success_url = reverse_lazy("inv:categoria_list")
+#     login_url = "bases:login"
 
 
 #SUB CATEGORIAS
@@ -178,13 +181,37 @@ class ProductoEdit(LoginRequiredMixin, generic.UpdateView):
         return super().form_valid(form)
 
 #BOTON DE DESACTIVAR
+def categoria_inactivar(request, id):
+    template_name = "inv/catalogos_del.html"
+    contexto={}
+    categoria = Categoria.objects.filter(pk=id).first()
+
+    if not categoria:
+        return HttpResponse('Categoría no existe ' + str(id))
+
+    if request.method == 'GET':
+        contexto = {'obj':categoria}
+    
+    if request.method == 'POST':
+        if categoria.estado:
+            categoria.estado = False
+            categoria.save()
+            contexto = {'obj':'OK'}
+            return HttpResponse('Categoria Inactivada')
+        else:
+            categoria.estado = True
+            categoria.save()
+            contexto = {'obj':'OK'}
+            return HttpResponse('Categoria Inactivada')
+    return render(request, template_name,contexto)
+
 def marca_inactivar(request, id):
     marca = Marca.objects.filter(pk=id).first()
     contexto = {}
     template_name = "inv/catalogos_del.html"
 
     if not marca:
-        return redirect("inv:marca_list")
+        return HttpResponse("inv:marca_list")
 
     if request.method == 'GET':
         contexto = {'obj':marca}
@@ -192,10 +219,16 @@ def marca_inactivar(request, id):
     if request.method == 'POST':
         if marca.estado:
             marca.estado = False
+            marca.save()
+            contexto = {'obj':'OK'}
+            return HttpResponse('Marca Inactivada')
         else:
             marca.estado = True
-        marca.save()
-        return redirect("inv:marca_list")
+            marca.save()
+            contexto = {'obj':'OK'}
+            return HttpResponse('Marca Inactivada')
+
+        
 
     return render(request, template_name,contexto)
     
