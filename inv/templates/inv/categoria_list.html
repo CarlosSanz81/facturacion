@@ -28,7 +28,9 @@
           <th>Estado</th>
           <th>F. Creado</th>
           <th>F. Modificado</th>
+          {% if perms.inv.change_categoria %}
           <th class="all">Acciones</th>
+          {% endif %}
         </thead>
         <tbody>
           {% for item in obj %}
@@ -38,7 +40,7 @@
               <td>{{ item.estado|yesno:"Activo,Desactivado" }}</td>
               <td>{{ item.fc | date:"d/m/Y H:i:s" }}</td>
               <td>{{ item.fm | date:"d/m/Y H:i:s"}}</td>
-              
+              {% if perms.inv.change_categoria %}
               <td>
                 <button  class="btn btn-warning btn-circle" onclick= "return abrir_modal('{% url 'inv:categoria_edit' item.id %}')" >
                 <i class="far fa-edit"></i></button>
@@ -49,6 +51,7 @@
                   <button  class="btn btn-danger btn-circle" onclick= "return abrir_modal('{% url 'inv:categoria_inactivar' item.id %}')" ><i class="far fa-thumbs-down"></i>
                 {% endif %}
               </td>
+              {% endif %}
             </tr>
           {% endfor %}
         </tbody>

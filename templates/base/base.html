@@ -71,30 +71,45 @@
 		<div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
 		  <div class="bg-white py-2 collapse-inner rounded">
 			<h6 class="collapse-header">Catálogos de inventario</h6>
+			{% if perms.inv.view_categoria %}
 			<a class="collapse-item" href="{% url 'inv:categoria_list' %} ">Categorías</a>
+			{% endif %}
+			{% if perms.inv.view_subcategoria %}
 			<a class="collapse-item" href="{% url 'inv:subcategoria_list' %} ">Sub-Categorías</a>
+			{% endif %}
+			{% if perms.inv.view_marca %}
 			<a class="collapse-item" href="{% url 'inv:marca_list' %} ">Marcas</a>
+			{% endif %}
+			{% if perms.inv.view_unidadmedida %}
 			<a class="collapse-item" href="{% url 'inv:unidadmedida_list' %} ">Unidades de medida</a>
+			{% endif %}
+			{% if perms.inv.view_producto %}
 			<a class="collapse-item" href="{% url 'inv:producto_list' %} ">Producto</a>
+		  	{% endif %}
 		  </div>
 		</div>
 	  </li>
 
 	  <!-- Nav Item - Utilities Collapse Menu -->
+	  
 	  <li class="nav-item">
+	  {% if perms.cpm.view_proveedor %}
 		<a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities" aria-expanded="true" aria-controls="collapseUtilities">
 		  <i class="fas fa-fw fa-wrench"></i>
 		  <span>Compras</span>
 		</a>
 		<div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
 		  <div class="bg-white py-2 collapse-inner rounded">
+		  	
 			<h6 class="collapse-header">Módulo de Compras:</h6>
 			<a class="collapse-item" href="{% url 'cmp:proveedor_list' %}">Proveedor</a>
 			<a class="collapse-item" href="utilities-border.html">Borders</a>
 			<a class="collapse-item" href="utilities-animation.html">Animations</a>
 			<a class="collapse-item" href="utilities-other.html">Other</a>
+	  
 		  </div>
 		</div>
+		{% endif %}
 	  </li>
 
 	  <!-- Divider -->
