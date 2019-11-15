@@ -10,6 +10,8 @@ import json
 from .models import Categoria, SubCategoria, Marca, UnidadMedida, Producto
 from .forms import CategoriaForm, SubCategoriaForm, MarcaForm, UnidadMedidaForm, ProductoForm
 
+from bases.views import SinPrivilegios
+
 #CATEGORIAS
 class CategoriaView(LoginRequiredMixin, PermissionRequiredMixin, generic.ListView):
     permission_required = "inv.view_categoria"
@@ -53,7 +55,7 @@ class CategoriaEdit(SuccessMessageMixin, LoginRequiredMixin, generic.UpdateView)
 
 
 #SUB CATEGORIAS
-class SubCategoriaView(LoginRequiredMixin,PermissionRequiredMixin, generic.ListView):
+class SubCategoriaView(LoginRequiredMixin,SinPrivilegios, generic.ListView):
     permission_required = "inv.view_subcategoria"
     model = SubCategoria
     template_name = "inv/subcategoria_list.html"
@@ -93,7 +95,8 @@ class SubCategoriaDel(LoginRequiredMixin, generic.DeleteView):
 
 
 #MARCAS
-class MarcaView(LoginRequiredMixin, generic.ListView):
+class MarcaView(LoginRequiredMixin,SinPrivilegios, generic.ListView):
+    permission_required = "inv.view_marca"
     model = Marca
     template_name = "inv/marca_list.html"
     context_object_name = "obj"
