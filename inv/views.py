@@ -127,7 +127,8 @@ class MarcaEdit(LoginRequiredMixin, generic.UpdateView):
         return super().form_valid(form)
 
 #UNIDAD DE MEDIDA
-class UnidadMedidaView(LoginRequiredMixin, generic.ListView):
+class UnidadMedidaView(LoginRequiredMixin,SinPrivilegios, generic.ListView):
+    permission_required = "inv.view_unidad_medida"
     model = UnidadMedida
     template_name = "inv/unidadmedida_list.html"
     context_object_name = "obj"
