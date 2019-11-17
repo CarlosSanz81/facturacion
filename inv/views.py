@@ -19,7 +19,6 @@ class CategoriaView(SinPrivilegios, generic.ListView):
     template_name = "inv/categoria_list.html"
     context_object_name = "obj"
     
-
 class CategoriaNew(LoginRequiredMixin, generic.CreateView):
     model = Categoria
     template_name = "inv/categoria_form.html"
@@ -32,8 +31,6 @@ class CategoriaNew(LoginRequiredMixin, generic.CreateView):
     def form_valid(self, form):
         form.instance.uc = self.request.user
         return super().form_valid(form)
-
-
 
 class CategoriaEdit(SuccessMessageMixin, LoginRequiredMixin, generic.UpdateView):
     model = Categoria
@@ -101,7 +98,6 @@ class MarcaView(SinPrivilegios, generic.ListView):
     model = Marca
     template_name = "inv/marca_list.html"
     context_object_name = "obj"
-    
 
 class MarcaNew(LoginRequiredMixin, generic.CreateView):
     model = Marca
