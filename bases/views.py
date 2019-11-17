@@ -6,9 +6,10 @@ from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMix
 from django.views import generic
 
 
-class SinPrivilegios(PermissionRequiredMixin):
+class SinPrivilegios(LoginRequiredMixin, PermissionRequiredMixin):
     raise_exception = False
     redirect_field_name = "redirect_to"
+    login_url = "bases:login"
 
     def handle_no_permission(self):
         from django.contrib.auth.models import AnonymousUser
@@ -20,5 +21,6 @@ class Home(LoginRequiredMixin, generic.TemplateView):
     template_name = 'bases/home.html'
     login_url = 'bases:login'
 
-class HomeSinPrivilegios(generic.TemplateView):
+class HomeSinPrivilegios(LoginRequiredMixin, generic.TemplateView):
+    login_url = 'bases:login'
     template_name = 'bases/sin_privilegios.html'

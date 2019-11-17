@@ -13,25 +13,27 @@ from .forms import CategoriaForm, SubCategoriaForm, MarcaForm, UnidadMedidaForm,
 from bases.views import SinPrivilegios
 
 #CATEGORIAS
-class CategoriaView(LoginRequiredMixin, PermissionRequiredMixin, generic.ListView):
+class CategoriaView(SinPrivilegios, generic.ListView):
     permission_required = "inv.view_categoria"
     model = Categoria
     template_name = "inv/categoria_list.html"
     context_object_name = "obj"
-    login_url = "bases:login"
+    
 
-class CategoriaNew(SuccessMessageMixin, LoginRequiredMixin, generic.CreateView):
+class CategoriaNew(LoginRequiredMixin, generic.CreateView):
     model = Categoria
     template_name = "inv/categoria_form.html"
     context_object_name = "obj"
     form_class = CategoriaForm
     success_url = reverse_lazy("inv:categoria_list")
     login_url = "bases:login"
-    success_message = "Categoría Creada Satisfactoriamente"
+    
 
     def form_valid(self, form):
         form.instance.uc = self.request.user
         return super().form_valid(form)
+
+
 
 class CategoriaEdit(SuccessMessageMixin, LoginRequiredMixin, generic.UpdateView):
     model = Categoria
@@ -55,12 +57,11 @@ class CategoriaEdit(SuccessMessageMixin, LoginRequiredMixin, generic.UpdateView)
 
 
 #SUB CATEGORIAS
-class SubCategoriaView(LoginRequiredMixin,SinPrivilegios, generic.ListView):
+class SubCategoriaView(SinPrivilegios, generic.ListView):
     permission_required = "inv.view_subcategoria"
     model = SubCategoria
     template_name = "inv/subcategoria_list.html"
     context_object_name = "obj"
-    login_url = "bases:login"
 
 class SubCategoriaNew(LoginRequiredMixin, generic.CreateView):
     model = SubCategoria
@@ -95,12 +96,12 @@ class SubCategoriaDel(LoginRequiredMixin, generic.DeleteView):
 
 
 #MARCAS
-class MarcaView(LoginRequiredMixin,SinPrivilegios, generic.ListView):
+class MarcaView(SinPrivilegios, generic.ListView):
     permission_required = "inv.view_marca"
     model = Marca
     template_name = "inv/marca_list.html"
     context_object_name = "obj"
-    login_url = "bases:login"
+    
 
 class MarcaNew(LoginRequiredMixin, generic.CreateView):
     model = Marca
@@ -127,12 +128,11 @@ class MarcaEdit(LoginRequiredMixin, generic.UpdateView):
         return super().form_valid(form)
 
 #UNIDAD DE MEDIDA
-class UnidadMedidaView(LoginRequiredMixin,SinPrivilegios, generic.ListView):
+class UnidadMedidaView(SinPrivilegios, generic.ListView):
     permission_required = "inv.view_unidad_medida"
     model = UnidadMedida
     template_name = "inv/unidadmedida_list.html"
     context_object_name = "obj"
-    login_url = "bases:login"
 
 class UnidadMedidaNew(LoginRequiredMixin, generic.CreateView):
     model = UnidadMedida
@@ -148,10 +148,10 @@ class UnidadMedidaNew(LoginRequiredMixin, generic.CreateView):
 
 class UnidadMedidaEdit(LoginRequiredMixin, generic.UpdateView):
     model = UnidadMedida
-    template_name = "inv/producto_form.html"
+    template_name = "inv/unidadmedida_form.html"
     context_object_name = "obj"
     form_class = UnidadMedidaForm
-    success_url = reverse_lazy("inv:producto_list")
+    success_url = reverse_lazy("inv:unidadmedida_list")
     login_url = "bases:login"
 
     def form_valid(self, form):
@@ -159,11 +159,11 @@ class UnidadMedidaEdit(LoginRequiredMixin, generic.UpdateView):
         return super().form_valid(form)
 
 #PRODUCTO
-class ProductoView(LoginRequiredMixin, generic.ListView):
+class ProductoView(SinPrivilegios, generic.ListView):
+    permission_required = "inv.view_producto"
     model = Producto
     template_name = "inv/producto_list.html"
     context_object_name = "obj"
-    login_url = "bases:login"
 
 class ProductoNew(LoginRequiredMixin, generic.CreateView):
     model = Producto
