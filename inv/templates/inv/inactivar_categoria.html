@@ -63,9 +63,8 @@ $(document).ready(function(){
     
 
         var id = {{ obj.id }};
-        var nombre = {{ obj.response }};
-        console.log(nombre);
-        var template="{% url 'inv:subcategoria_del' obj.id %}" ;
+        
+        var template="{% url 'inv:categoria_inactivar' obj.id %}" ;
         //template += id; //PROVOCAR UN ERROR
         var data = {"id":id};
         data = JSON.stringify(data);
@@ -81,7 +80,7 @@ $(document).ready(function(){
                 console.log(response);
                 cerrar_modal();
                 //alert(response);
-                var tipo = (response.startsWith('Marca no existe') ? 'red':'green' );
+                var tipo = (response.startsWith('Categoría no existe') ? 'red':'green' );
                 mensaje(response, tipo); // CREAMOS EL MENSAJE JS
             },
             error: function(jqXHR, textStatus, errorThrow){

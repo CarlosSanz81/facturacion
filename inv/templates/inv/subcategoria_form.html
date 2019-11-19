@@ -1,64 +1,50 @@
-{% extends 'base/base.html' %}
+<div class="modal-dialog modal-lg">
+    <div class="modal-content">
+        {% if obj %}
+        <form method="POST" role="form" class="form-inline" action="{% url 'inv:subcategoria_edit' obj.pk %}">
+        {% else %}
+        <form method="POST" role="form" class="form-inline" action="{% url 'inv:subcategoria_new' %}">
+        {% endif %}
+            
+            <div class="col-xl-12 col-md-12 mb-12">
 
-{% block page_content %}
+                {% if obj %}
+                <div class="card border-left-warning shadow h-100 py-2">
 
-    <form method="POST" class="form-inline">
-        {% csrf_token %}
-        <div class="col-xl-12 col-md-12 mb-12">
+                {% else %}
+                <div class="card border-left-success shadow h-100 py-2">
 
-            {% if obj %}
-            <div class="card border-left-warning shadow h-100 py-2">
+                {% endif %}
 
-            {% else %}
-            <div class="card border-left-success shadow h-100 py-2">
-
-            {% endif %}
-
-                <div class="card-body">
-                    <div class="row no-gutters align-items-center">
-                        <div class="col mr-2">
-                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                                {% if obj %} Editar{% else %} Nueva{% endif %} Sub Categoría 
-                            </div>
-                            <div class="dropdownn-divider"></div>
-                            <div class="row">
-                                <div class="col-5">
-                                    <div class="input-group">
-                                        {% comment %} <input type="text" name="descripcion" maxlength="100" class="form-control" required id="id_descripcion" placeholder="Descripción"
-                                        value="{% if obj %} {{ obj.descripcion }} {% endif %}"> {% endcomment %}
-                                        {{ form.categoria}}
-                                    </div>
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                    {% if obj %} Editar{% else %} Nueva{% endif %} Subcategoría
                                 </div>
-                                <div class="col-5">
-                                    <div class="input-group">
-                                        {{ form.descripcion }}
-                                    </div>
+                                <div class="dropdown-divider"></div>
+                                {% csrf_token %}
+                                <div class="row">
+                                    {{ form.as_p }}
                                 </div>
-                            
-                                <div class="col-2">
-                                    <div class="input-group">
-                                        {% comment %} <label for="id_estado">Estado<a> &nbsp</a>
-                                        <input type="checkbox" name="estado" class="form-control" id="id_estado" 
-                                        {% if obj.estado %} checked {% endif %}></label> {% endcomment %}
-                                        {{ form.estado }}
+                                <div class="dropdown-divider"></div>
+                                <div class="row">
+                                    <div class="col">
+                                        <button type="submit" class="btn btn-danger"><span class="fa fa-save"></span> Guardar</button>
+                                        {% comment %} <a href="{% url 'inv:producto_list' %}" class="btn btn-success"><span class="fa fa-undo"></span> Cancelar</a> {% endcomment %}
+                                        <button type="button" class="btn btn-success" onclick="return cerrar_modal()">
+                                            Cancelar
+                                        </button>
                                     </div>
                                 </div>
                             </div>
-                            <div class="dropdown-divider"></div>
-                            <div class="row">
-                                <div class="col">
-                                    <button type="submit" class="btn btn-danger"><span class="fa fa-save"></span> Guardar</button>
-                                    <a href="{% url 'inv:subcategoria_list' %}" class="btn btn-success"><span class="fa fa-undo"></span> Cancelar</a>
-                                </div>
+                            <div class="col-auto">
+                                <i class="far fa-calendar-plus fa-2x text-gray-300"></i>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </form>
-
-{% endblock page_content %}
-
-{% block js_page %}
-{% endblock js_page %}
+        </form>
+    </div>
+</div>

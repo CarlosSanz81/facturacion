@@ -111,13 +111,14 @@ class MarcaNew(LoginRequiredMixin, generic.CreateView):
         form.instance.uc = self.request.user
         return super().form_valid(form)
 
-class MarcaEdit(LoginRequiredMixin, generic.UpdateView):
+class MarcaEdit(SuccessMessageMixin, LoginRequiredMixin, generic.UpdateView):
     model = Marca
     template_name = "inv/marca_form.html"
     context_object_name = "obj"
     form_class = MarcaForm
     success_url = reverse_lazy("inv:marca_list")
     login_url = "bases:login"
+    success_message = "Marca Actualizada Correctamente"
 
     def form_valid(self, form):
         form.instance.um = self.request.user.id
@@ -187,7 +188,7 @@ class ProductoEdit(LoginRequiredMixin, generic.UpdateView):
 
 #BOTON DE DESACTIVAR
 def categoria_inactivar(request, id):
-    template_name = "inv/catalogos_del.html"
+    template_name = "inv/inactivar_categoria.html"
     contexto={}
     categoria = Categoria.objects.filter(pk=id).first()
 
@@ -213,10 +214,37 @@ def categoria_inactivar(request, id):
         
     return render(request, template_name,contexto)
 
+def subcategoria_inactivar(request, id):
+    template_name = "inv/inactivar_subcategoria.html"
+    contexto={}
+    subcategoria = SubCategoria.objects.filter(pk=id).first()
+
+    if not subcategoria:
+        return HttpResponse('SubCategoría no existe ' + str(id))
+
+    if request.method == 'GET':
+        contexto = {'obj':subcategoria}
+    
+    if request.method == 'POST':
+        if subcategoria.estado:
+            subcategoria.estado = False
+            subcategoria.save()
+            contexto = {'obj':'OK'}
+            
+            return HttpResponse('SubCategoria Inactivada')
+            
+        else:
+            subcategoria.estado = True
+            subcategoria.save()
+            contexto = {'obj':'OK'}
+            return HttpResponse('SubCategoria Activada')
+        
+    return render(request, template_name,contexto)
+
 def marca_inactivar(request, id):
     marca = Marca.objects.filter(pk=id).first()
     contexto = {}
-    template_name = "inv/catalogos_del.html"
+    template_name = "inv/inactivar_marca.html"
 
     if not marca:
         return HttpResponse("inv:marca_list")
@@ -234,43 +262,48 @@ def marca_inactivar(request, id):
             marca.estado = True
             marca.save()
             contexto = {'obj':'OK'}
-            return HttpResponse('Marca Inactivada')
+            return HttpResponse('Marca Activada')
 
         
 
     return render(request, template_name,contexto)
     
 def unidadmedida_inactivar(request, id):
-    marca = UnidadMedida.objects.filter(pk=id).first()
+    unidadmedida = UnidadMedida.objects.filter(pk=id).first()
     contexto = {}
-    template_name = "inv/catalogos_del.html"
+    template_name = "inv/inactivar_unidadmedida.html"
 
-    if not marca:
-        return redirect("inv:unidadmedida_list")
-
-    if request.method == 'GET':
-        contexto = {'obj':marca}
+    if not unidadmedida:
+        return HttpResponse('Unidad de Medida no existe ' + str(id))
     
+    if request.method == 'GET':
+        contexto={'obj':unidadmedida}
+             
     if request.method == 'POST':
-        if marca.estado:
-            marca.estado = False
+        if unidadmedida.estado:
+            unidadmedida.estado = False
+            unidadmedida.save()
+            contexto = {'obj':'OK'}
+            return HttpResponse('Unidad de Medida Inactivada')
         else:
-            marca.estado = True
-        marca.save()
-        return redirect("inv:unidadmedida_list")
+            unidadmedida.estado = True
+            unidadmedida.save()
+            contexto = {'obj':'OK'}
+            return HttpResponse('Unidad de Medida Activada')
 
     return render(request, template_name,contexto)
 
 def producto_inactivar(request, id):
     prod = Producto.objects.filter(pk=id).first()
     contexto = {}
-    template_name = "inv/catalogos_del.html"
+    template_name = "inv/inactivar_producto.html"
 
     if not prod:
         return HttpResponse('Producto no existe ' + str(id))
     
     if request.method == 'GET':
-        contexto = {'obj':prod}
+        contexto={'obj':prod}
+             
     if request.method == 'POST':
         if prod.estado:
             prod.estado = False

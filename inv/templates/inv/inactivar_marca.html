@@ -63,9 +63,8 @@ $(document).ready(function(){
     
 
         var id = {{ obj.id }};
-        var nombre = {{ obj.response }};
-        console.log(nombre);
-        var template="{% url 'inv:subcategoria_del' obj.id %}" ;
+        
+        var template="{% url 'inv:marca_inactivar' obj.id %}" ;
         //template += id; //PROVOCAR UN ERROR
         var data = {"id":id};
         data = JSON.stringify(data);
