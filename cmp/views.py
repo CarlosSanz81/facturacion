@@ -3,6 +3,7 @@ from django.views import generic
 from django.urls import reverse_lazy
 
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.decorators import login_required, permission_required
 from django.http import HttpResponse
 import json
 
@@ -44,6 +45,8 @@ class ProveedorEdit(LoginRequiredMixin, generic.UpdateView):
 
 
 #DESACTIVACIONES
+@login_required(login_url = '/login/')
+@permission_required('cmp.change_proveedor', login_url= 'bases:sin_privilegios')
 def proveedor_inactivar(request, id):
     template_name='cmp/inactivar_prv.html'
     contexto={}

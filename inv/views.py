@@ -1,11 +1,11 @@
 from django.shortcuts import render, redirect
 from django.views import generic
 from django.urls import reverse_lazy
+from django.contrib import messages
+
 from django.contrib.auth.mixins import LoginRequiredMixin , PermissionRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
-
-from django.http import HttpResponse
-import json
+from django.contrib.auth.decorators import login_required, permission_required
 
 from .models import Categoria, SubCategoria, Marca, UnidadMedida, Producto
 from .forms import CategoriaForm, SubCategoriaForm, MarcaForm, UnidadMedidaForm, ProductoForm
@@ -187,6 +187,8 @@ class ProductoEdit(LoginRequiredMixin, generic.UpdateView):
         return super().form_valid(form)
 
 #BOTON DE DESACTIVAR
+@login_required(login_url = '/login/')
+@permission_required('inv.change_categoria', login_url= 'bases:sin_privilegios')
 def categoria_inactivar(request, id):
     template_name = "inv/inactivar_categoria.html"
     contexto={}
@@ -214,6 +216,8 @@ def categoria_inactivar(request, id):
         
     return render(request, template_name,contexto)
 
+@login_required(login_url = '/login/')
+@permission_required('inv.change_subcategoria', login_url= 'bases:sin_privilegios')
 def subcategoria_inactivar(request, id):
     template_name = "inv/inactivar_subcategoria.html"
     contexto={}
@@ -241,6 +245,8 @@ def subcategoria_inactivar(request, id):
         
     return render(request, template_name,contexto)
 
+@login_required(login_url = '/login/')
+@permission_required('inv.change_marca', login_url= 'bases:sin_privilegios')
 def marca_inactivar(request, id):
     marca = Marca.objects.filter(pk=id).first()
     contexto = {}
@@ -267,7 +273,9 @@ def marca_inactivar(request, id):
         
 
     return render(request, template_name,contexto)
-    
+
+@login_required(login_url = '/login/')
+@permission_required('inv.change_unidadmedida', login_url= 'bases:sin_privilegios')   
 def unidadmedida_inactivar(request, id):
     unidadmedida = UnidadMedida.objects.filter(pk=id).first()
     contexto = {}
@@ -293,6 +301,8 @@ def unidadmedida_inactivar(request, id):
 
     return render(request, template_name,contexto)
 
+@login_required(login_url = '/login/')
+@permission_required('inv.change_producto', login_url= 'bases:sin_privilegios')
 def producto_inactivar(request, id):
     prod = Producto.objects.filter(pk=id).first()
     contexto = {}
