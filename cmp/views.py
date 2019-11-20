@@ -112,3 +112,10 @@ def compras(request, compra_id=None):
                 'total':enc.total
             }
             form_compras = ComprasEncForm(e)
+        else:
+            det = None
+        
+        contexto = {'productos':prod, 'encabezado':enc, 'detalle':det, 'form_enc':form_compras}
+
+
+        return render(request, template_name, contexto)
